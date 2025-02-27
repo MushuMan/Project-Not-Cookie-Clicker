@@ -8,27 +8,28 @@ pygame.display.set_caption("Not Cookie Clicker")
 
 # Font
 # Font path needs to be defined
-font_path = 
-font = pygame.font.Font(None, 36)
+pygame.font.init()
+font = pygame.font.Font("times new roman.ttf", 36)
 
 BG = pygame.transform.scale(pygame.image.load("spacebg.jpg"), (WIDTH, HEIGHT))
 
 # Intalizing Cookie Count
 cookie_count = 0
 
+
+
 # Function to handle cookie clicks
 def click_cookie():
     global cookie_count
     cookie_count =+ 1
 
-
-# Draw the Cookie Count
-cookie_label = font.render(f"Cookies: {int(cookie_count)}", True, BLACK)
-WIN.blit(cookie_label, (20,20))
-
+text_color =(255, 255, 255)
 
 def draw():
     WIN.blit(BG, (0, 0))
+    # Draw the Cookie Count
+    cookie_label = font.render(f"Cookies: {int(cookie_count)}", True, text_color)
+    WIN.blit(cookie_label, (20,20))
     pygame.display.update()
 
 def main():
