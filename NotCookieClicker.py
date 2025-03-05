@@ -21,7 +21,6 @@ def draw():
     # Draw the Cookie Count
     cookie_label = font.render(f"Cookies: {int(cookie_count)}", True, text_color)
     WIN.blit(cookie_label, (20, 20))
-    pygame.display.update()
 
 # Setting Up Main Button for Cookies
 class Button:
@@ -68,6 +67,7 @@ def main():
         
         draw()
         button.draw(WIN)  # Draw the button on the main window
+        pygame.display.update()
 
     pygame.quit()
 
