@@ -24,12 +24,14 @@ def draw():
 
 # Setting Up Main Button for Cookies
 class Button:
-    def __init__(self, x, y, width, height, text):
+    def __init__(self, x, y, width, height, text, image=None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.color = (0, 255, 0)  # Normal color
         self.hover_color = (0, 200, 0)  # Color when hovered
         self.font = pygame.font.Font("times new roman.ttf", 36)
+        self.image = pygame.image.load(image).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
 
     def draw(self, surface):
         # Change Color on Hover
@@ -38,6 +40,9 @@ class Button:
             pygame.draw.rect(surface, self.hover_color, self.rect)  # Draw hover color
         else:
             pygame.draw.rect(surface, self.color, self.rect)  # Draw normal color
+
+        if hasattr(self, "image"):
+            surface.blit(self.image, self.rect.topleft)
 
         # Draw the text on top of the button
         text_surface = self.font.render(self.text, True, (255, 255, 255))
@@ -51,7 +56,7 @@ class Button:
 def main():
     run = True
 
-    button = Button(400, 350, 200, 150, "Click For Cookie")  # Adjusted button position and size
+    button = Button(400, 350, 200, 150, "Click For Cookie", "Pringle.png")  # Adjusted button position and size
 
     while run:
         for event in pygame.event.get():
