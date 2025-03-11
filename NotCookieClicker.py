@@ -13,22 +13,22 @@ font = pygame.font.Font("times new roman.ttf", 36)
 BG = pygame.transform.scale(pygame.image.load("spacebg.jpg"), (WIDTH, HEIGHT))
 
 # Initializing Cookie Count
-cookie_count = 0
+pringle_count = 0
 text_color = (255, 255, 255)
 
 def draw():
     WIN.blit(BG, (0, 0))
     # Draw the Cookie Count
-    cookie_label = font.render(f"Cookies: {int(cookie_count)}", True, text_color)
+    cookie_label = font.render(f"Pringles: {int(pringle_count)}", True, text_color)
     WIN.blit(cookie_label, (20, 20))
 
-# Setting Up Main Button for Cookies
+# Setting Up Main Button for Pringles
 class Button:
     def __init__(self, x, y, width, height, text, image=None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.color = (0, 255, 0)  # Normal color
-        self.hover_color = (0, 200, 0)  # Color when hovered
+        self.hover_color = (100, 200, 0)  # Color when hovered
         self.font = pygame.font.Font("times new roman.ttf", 36)
         self.image = pygame.image.load(image).convert_alpha()
         self.image = pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
@@ -45,7 +45,7 @@ class Button:
             surface.blit(self.image, self.rect.topleft)
 
         # Draw the text on top of the button
-        text_surface = self.font.render(self.text, True, (255, 255, 255))
+        text_surface = self.font.render(self.text, True, (255, 255, 255)) 
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)
 
@@ -56,7 +56,7 @@ class Button:
 def main():
     run = True
 
-    button = Button(400, 350, 200, 150, "Click For Cookie", "Pringle.png")  # Adjusted button position and size
+    button = Button(400, 350, 200, 150, "Click For Pringle", "Pringle.png")  # Adjusted button position and size
 
     while run:
         for event in pygame.event.get():
@@ -67,8 +67,8 @@ def main():
        # Check for mouse button down event
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button.rect.collidepoint(event.pos):  # Check if the button was clicked
-                    global cookie_count  # Use global to modify the cookie_count variable
-                    cookie_count += 1
+                    global pringle_count  # Use global to modify the pringle_count variable
+                    pringle_count += 1
         
         draw()
         button.draw(WIN)  # Draw the button on the main window
