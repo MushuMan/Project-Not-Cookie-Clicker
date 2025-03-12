@@ -54,7 +54,7 @@ class Button:
 
         # Draw the text on top of the button
         text_surface = self.font.render(self.text, True, (255, 255, 255)) 
-        text_rect = text_surface.get_rect(center=self.rect.center)
+        text_rect = text_surface.get_rect(topright=self.rect.topright)
         surface.blit(text_surface, text_rect)
     
     def change_size(self, width, height):
