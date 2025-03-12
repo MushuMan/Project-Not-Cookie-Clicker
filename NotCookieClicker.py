@@ -25,21 +25,29 @@ def draw():
 # Setting Up Main Button for Pringles
 class Button:
     def __init__(self, x, y, width, height, text, image=None):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.color = (0, 255, 0)  # Normal color
         self.hover_color = (100, 200, 0)  # Color when hovered
+        self.hover_width = (width + 10)
+        self.hover_height = (height + 10)
         self.font = pygame.font.Font("times new roman.ttf", 36)
-        self.image = pygame.image.load(image).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
+        self.original_image = pygame.image.load(image).convert_alpha()
+        self.image = pygame.transform.scale(self.original_image, (self.rect.width, self.rect.height))
 
     def draw(self, surface):
         # Change Color on Hover
         mouse_pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(mouse_pos):
-            pygame.draw.rect(surface, self.hover_color, self.rect)  # Draw hover color
+            self.change_size(self.hover_width, self.hover_height)
+            # pygame.draw.rect(surface, self.hover_color, self.rect)  # Draw hover color
         else:
-            pygame.draw.rect(surface, self.color, self.rect)  # Draw normal color
+            self.change_size(self.width, self.height)
+            # pygame.draw.rect(surface, self.color, self.rect)  # Draw normal color
 
         if hasattr(self, "image"):
             surface.blit(self.image, self.rect.topleft)
@@ -52,11 +60,15 @@ class Button:
     def is_clicked(self):
         mouse_click = pygame.mouse.get_pressed()
         return mouse_click[0] and self.rect.collidepoint(pygame.mouse.get_pos())
+    
+    def change_size(self, width, height):
+        self.rect = pygame.Rect((self.x - (width // 2)), (self.y - (height // 2)), width, height)
+        self.image = pygame.transform.scale(self.original_image, (self.rect.width, self.rect.height))
 
 def main():
     run = True
 
-    button = Button(400, 350, 200, 150, "Click For Pringle", "Pringle.png")  # Adjusted button position and size
+    button = Button(500, 400, 200, 150, "Click For Pringle", "Pringle.png")  # Adjusted button position and size
 
     while run:
         for event in pygame.event.get():
