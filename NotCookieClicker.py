@@ -33,8 +33,8 @@ class Button:
         self.text = text
         self.color = (0, 255, 0)  # Normal color
         self.hover_color = (100, 200, 0)  # Color when hovered
-        self.hover_width = (width + 10)
-        self.hover_height = (height + 10)
+        self.hover_width = (width + 20)
+        self.hover_height = (height + 20)
         self.font = pygame.font.Font("times new roman.ttf", 36)
         self.original_image = pygame.image.load(image).convert_alpha()
         self.image = pygame.transform.scale(self.original_image, (self.rect.width, self.rect.height))
@@ -56,10 +56,6 @@ class Button:
         text_surface = self.font.render(self.text, True, (255, 255, 255)) 
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)
-
-    def is_clicked(self):
-        mouse_click = pygame.mouse.get_pressed()
-        return mouse_click[0] and self.rect.collidepoint(pygame.mouse.get_pos())
     
     def change_size(self, width, height):
         self.rect = pygame.Rect((self.x - (width // 2)), (self.y - (height // 2)), width, height)
@@ -68,7 +64,7 @@ class Button:
 def main():
     run = True
 
-    button = Button(500, 400, 200, 150, "Click For Pringle", "Pringle.png")  # Adjusted button position and size
+    button = Button((WIDTH // 2), (HEIGHT // 2), 200, 150, "Click For Pringle", "Pringle.png")  # Adjusted button position and size
 
     while run:
         for event in pygame.event.get():
