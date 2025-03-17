@@ -3,25 +3,27 @@ import time
 import random
 
 WIDTH, HEIGHT = 1000, 800
-WIN = pygame.display.set_mode((WIDTH, HEIGHT),pygame.RESIZABLE)
+WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Pringle Clicker")
 
 # Font
 pygame.font.init()
 font = pygame.font.Font("times new roman.ttf", 36)
 
-# Initializing Pringle Count
+# Initializing Pringle Count and Auto Pringle Upgrade Counter
 pringle_count = 0
-text_color = (255, 255, 255)
+text_color = (255, 0, 0)
+auto_pringle = 0
 
-#Background Image
-BG = pygame.transform.scale(pygame.image.load("spacebg.jpg"), (WIDTH, HEIGHT))
+# Background Image
+BG_original = pygame.image.load("spacebg.jpg")
+BG = pygame.transform.scale(BG_original, (WIDTH, HEIGHT))
 
-#Centers Images and Buttons when resizing window
+# Centers Images and Buttons when resizing window
 def setGet(screenSize):
     global WIDTH, HEIGHT, BG
     WIDTH, HEIGHT = screenSize
-    BG = pygame.transform.scale(BG, (WIDTH, HEIGHT))
+    BG = pygame.transform.scale(BG_original, (WIDTH, HEIGHT))
 
 def draw():
     WIN.blit(BG, (0, 0))
@@ -38,14 +40,16 @@ class Button:
         self.height = height
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
-        self.color = (0, 255, 0)  # Normal color
-        self.hover_color = (100, 200, 0)  # Color when hovered
+        self.color = (255, 255, 255)  # Normal color
+        self.hover_color = (200, 200, 200)  # Color when hovered
         self.hover_width = (width + 20)
         self.hover_height = (height + 20)
         self.font = pygame.font.Font("times new roman.ttf", 36)
-        self.original_image = pygame.image.load(image).convert_alpha()
-        self.image = pygame.transform.scale(self.original_image, (self.rect.width, self.rect.height))
-        self.update_position(x,y)
+        self.original_image = None
+        if image:
+            self.original_image = pygame.image.load(image).convert_alpha()
+            self.image = pygame.transform.scale(self.original_image, (self.rect.width, self.rect.height))
+        self.update_position(x, y)
 
     def update_position(self, x, y):
         self.x = x
@@ -53,51 +57,74 @@ class Button:
         self.rect = pygame.Rect(x - (self.width // 2), y - (self.height // 2), self.width, self.height)
 
     def draw(self, surface):
-        # Change Color on Hover
+        # Change size on Hover
         mouse_pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(mouse_pos):
             self.change_size(self.hover_width, self.hover_height)
-            # pygame.draw.rect(surface, self.hover_color, self.rect)  # Draw hover color
         else:
             self.change_size(self.width, self.height)
-            # pygame.draw.rect(surface, self.color, self.rect)  # Draw normal color
-
-        if hasattr(self, "image"):
+        
+        # Draw the button background (white for auto button or image if available)
+        if self.original_image:
             surface.blit(self.image, self.rect.topleft)
+        else:
+            pygame.draw.rect(surface, self.color, self.rect)
 
         # Draw the text on top of the button
-        text_surface = self.font.render(self.text, True, (255, 255, 255)) 
-        text_rect = text_surface.get_rect(topright=self.rect.topright)
+        text_surface = self.font.render(self.text, True, (0, 0, 0))  # Using black text for contrast on white
+        text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)
     
     def change_size(self, width, height):
-        self.update_position(self.x, self.y)
-        self.rect = pygame.Rect((self.x - (width // 2)), (self.y - (height // 2)), width, height)
-        self.image = pygame.transform.scale(self.original_image, (self.rect.width, self.rect.height))
+        # Keep the button centered while changing size
+        center = self.rect.center
+        self.rect = pygame.Rect(0, 0, width, height)
+        self.rect.center = center
+        if self.original_image:
+            self.image = pygame.transform.scale(self.original_image, (self.rect.width, self.rect.height))
+
+# Define a custom event for auto pringle increment every 2 seconds
+AUTO_PRINGLE_EVENT = pygame.USEREVENT + 1
+pygame.time.set_timer(AUTO_PRINGLE_EVENT, 1000)
 
 def main():
+    global pringle_count, auto_pringle
     run = True
 
-    button = Button((WIDTH // 2), (HEIGHT // 2), 200, 150, "Click For Pringle", "Pringle.png")  # Adjusted button position and size
+    # Main pringle click button at center of screen
+    click_button = Button(WIDTH // 2, HEIGHT // 2, 200, 150, "Click For Pringle", "Pringle.png")
+    # Auto pringle upgrade button, placed on the side (adjust x,y as desired)
+    autobutton = Button(850, HEIGHT // 2, 200, 150, "AutoClicker (10 pringles)", None)
 
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 break
-        
-       # Check for mouse button down event
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if button.rect.collidepoint(event.pos):  # Check if the button was clicked
-                    global pringle_count  # Use global to modify the pringle_count variable
-                    pringle_count += 1
 
             if event.type == pygame.VIDEORESIZE:
                 setGet(event.size)
-                button.update_position(WIDTH // 2, HEIGHT //2)
-        
+                click_button.update_position(WIDTH // 2, HEIGHT // 2)
+                autobutton.update_position(850, HEIGHT // 2)
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # Check if main click button was clicked
+                if click_button.rect.collidepoint(event.pos):
+                    pringle_count += 1
+
+                # Check if auto upgrade button was clicked
+                if autobutton.rect.collidepoint(event.pos):
+                    if pringle_count >= 10:
+                        auto_pringle += 1
+                        pringle_count -= 10
+
+            # Handle the auto pringle event triggered every 2 seconds
+            if event.type == AUTO_PRINGLE_EVENT:
+                pringle_count += auto_pringle
+
         draw()
-        button.draw(WIN)  # Draw the button on the main window
+        click_button.draw(WIN)
+        autobutton.draw(WIN)
         pygame.display.update()
 
     pygame.quit()
