@@ -35,7 +35,7 @@ def draw():
     # Draw the Auto Clickers and Grandmas Count
     auto_clicker_label = font.render(f"Auto Clickers: {int(auto_clickers)}", True, text_color)
     WIN.blit(auto_clicker_label, (20, 50))
-    grandma_label = font.render(f"Grandmas: {int(grandmas)}", True, text_color)
+    grandma_label = font.render(f"Pringle Men: {int(grandmas)}", True, text_color)
     WIN.blit(grandma_label, (20, 80))
 
     # Draw the pringle image
@@ -107,7 +107,7 @@ def main():
 
     pringle_button = Button(450, 300, 100, 100, "", "Pringle.png", click_pringle)  # Pringle button with image
     auto_clicker_button = Button(200, 250, 200, 40, "Buy Auto Clicker (10 pringles)", action=buy_auto_clicker)
-    grandma_button = Button(200, 300, 200, 40, "Buy Grandma (100 pringles)", action=buy_grandma)
+    grandma_button = Button(200, 300, 200, 40, "Buy Pringle Man (100 pringles)", action=buy_grandma)
 
     last_update = time.time()
 
