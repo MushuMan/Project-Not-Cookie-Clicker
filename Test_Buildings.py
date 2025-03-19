@@ -93,8 +93,8 @@ def buy_auto_clicker():
 
 def buy_grandma():
     global pringle_count, grandmas
-    if pringle_count >= 1000:
-        pringle_count -= 1000
+    if pringle_count >= 100:
+        pringle_count -= 100
         grandmas += 1
 
 def update_pringles():
@@ -107,7 +107,7 @@ def main():
 
     pringle_button = Button(450, 300, 100, 100, "", "Pringle.png", click_pringle)  # Pringle button with image
     auto_clicker_button = Button(200, 250, 200, 40, "Buy Auto Clicker (10 pringles)", action=buy_auto_clicker)
-    grandma_button = Button(200, 300, 200, 40, "Buy Grandma (1000 pringles)", action=buy_grandma)
+    grandma_button = Button(200, 300, 200, 40, "Buy Grandma (100 pringles)", action=buy_grandma)
 
     last_update = time.time()
 
