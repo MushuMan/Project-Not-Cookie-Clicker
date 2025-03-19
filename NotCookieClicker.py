@@ -10,6 +10,9 @@ pygame.display.set_caption("Pringle Clicker")
 pygame.font.init()
 font = pygame.font.Font("times new roman.ttf", 36)
 
+#Initiate Clock
+clock = pygame.time.Clock()
+
 # Initializing Pringle Count and Auto Pringle Upgrade Counter
 pringle_count = 0
 text_color = (255, 0, 0)
@@ -71,7 +74,7 @@ class Button:
             pygame.draw.rect(surface, self.color, self.rect)
 
         # Draw the text on top of the button
-        text_surface = self.font.render(self.text, True, (0, 0, 0))  # Using black text for contrast on white
+        text_surface = self.font.render(self.text, True, (60, 0, 150))  # Using black text for contrast on white
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)
     
@@ -105,7 +108,7 @@ def main():
             if event.type == pygame.VIDEORESIZE:
                 setGet(event.size)
                 click_button.update_position(WIDTH // 2, HEIGHT // 2)
-                autobutton.update_position(850, HEIGHT // 2)
+                autobutton.update_position((WIDTH - 150), HEIGHT // 2)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Check if main click button was clicked
@@ -125,6 +128,7 @@ def main():
         draw()
         click_button.draw(WIN)
         autobutton.draw(WIN)
+        clock.tick(60)
         pygame.display.update()
 
     pygame.quit()
