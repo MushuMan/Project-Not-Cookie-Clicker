@@ -46,7 +46,7 @@ class Button:
     def __init__(self, x, y, width, height, text, image=None, action=None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
-        self.color = (0, 255, 0)  # Normal color
+        self.color = (0, 0, 0)  # Normal color
         self.hover_color = (0, 200, 0)  # Color when hovered
         self.font = pygame.font.Font("times new roman.ttf", 36)
         self.action = action
