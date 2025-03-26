@@ -107,7 +107,7 @@ def main():
     # Main pringle click button at center of screen
     click_button = Button(WIDTH // 2, HEIGHT // 2, 200, 150, "Click For Pringle", "Pringle.png")
     # Auto pringle upgrade button, placed on the side (adjust x,y as desired)
-    autobutton = Button(850, HEIGHT // 2, 200, 150, "AutoClicker (10 pringles)", None)
+    autobutton = Button(850, HEIGHT // 2, 200, 150, "AutoClicker (10 pringles)", "pringle_can.png")
 
     while run:
         for event in pygame.event.get():
