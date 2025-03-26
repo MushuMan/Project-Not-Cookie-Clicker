@@ -16,6 +16,7 @@ clock = pygame.time.Clock()
 # Initializing Pringle Count and Auto Pringle Upgrade Counter
 pringle_count = 0
 text_color = (255, 0, 0)
+text_color = (255, 255, 255)
 auto_pringle = 0
 
 # Background Image
