@@ -48,12 +48,18 @@ class Button:
         self.hover_color = (200, 200, 200)  # Color when hovered
         self.hover_width = (width + 20)
         self.hover_height = (height + 20)
+        self.click_width = (width + 10)
+        self.click_height = (height + 10)
         self.font = pygame.font.Font("times new roman.ttf", 36)
         self.original_image = None
         if image:
             self.original_image = pygame.image.load(image).convert_alpha()
             self.image = pygame.transform.scale(self.original_image, (self.rect.width, self.rect.height))
         self.update_position(x, y)
+        self.tick = 0
+
+    def change_tick(self, tick):
+        self.tick = tick
 
     def update_position(self, x, y):
         self.x = x
@@ -63,8 +69,11 @@ class Button:
     def draw(self, surface):
         # Change size on Hover
         mouse_pos = pygame.mouse.get_pos()
-        if self.rect.collidepoint(mouse_pos):
+        if self.rect.collidepoint(mouse_pos) and self.tick == 0:
             self.change_size(self.hover_width, self.hover_height)
+        elif self.rect.collidepoint(mouse_pos) and self.tick > 0:
+            self.change_size(self.click_width, self.click_height)
+            self.tick -= 1
         else:
             self.change_size(self.width, self.height)
         
@@ -115,9 +124,11 @@ def main():
                 # Check if main click button was clicked
                 if click_button.rect.collidepoint(event.pos):
                     pringle_count += 1
+                    click_button.change_tick(5)
 
                 # Check if auto upgrade button was clicked
                 if autobutton.rect.collidepoint(event.pos):
+                    autobutton.change_tick(5)
                     if pringle_count >= 10:
                         auto_pringle += 1
                         pringle_count -= 10
