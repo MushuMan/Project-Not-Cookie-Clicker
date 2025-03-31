@@ -129,9 +129,10 @@ def main():
                 # Check if auto upgrade button was clicked
                 if autobutton.rect.collidepoint(event.pos):
                     autobutton.change_tick(5)
-                    if pringle_count >= 10:
+
+                    if pringle_count >= 10 + (10 * auto_pringle):
                         auto_pringle += 1
-                        pringle_count -= 10
+                        pringle_count -= (10 * auto_pringle) #Add math so cost goes up for every autoclicker bought
 
             # Handle the auto pringle event triggered every 2 seconds
             if event.type == AUTO_PRINGLE_EVENT:
