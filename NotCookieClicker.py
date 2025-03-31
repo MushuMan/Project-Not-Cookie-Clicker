@@ -18,6 +18,7 @@ pringle_count = 0
 text_color = (255, 0, 0)
 text_color = (255, 255, 255)
 auto_pringle = 0
+cost = 0
 
 # Background Image
 BG_original = pygame.image.load("spacebg.jpg")
@@ -101,13 +102,13 @@ AUTO_PRINGLE_EVENT = pygame.USEREVENT + 1
 pygame.time.set_timer(AUTO_PRINGLE_EVENT, 1000)
 
 def main():
-    global pringle_count, auto_pringle
+    global pringle_count, auto_pringle, cost
     run = True
 
     # Main pringle click button at center of screen
     click_button = Button(WIDTH // 2, HEIGHT // 2, 200, 150, "Click For Pringle", "Pringle.png")
     # Auto pringle upgrade button, placed on the side (adjust x,y as desired)
-    autobutton = Button(850, HEIGHT // 2, 200, 150, "AutoClicker (10 pringles)", "pringle_can.png")
+    autobutton = Button(850, HEIGHT // 2, 200, 150, "AutoClicker ", "pringle_can.png")
 
     while run:
         for event in pygame.event.get():
@@ -129,10 +130,10 @@ def main():
                 # Check if auto upgrade button was clicked
                 if autobutton.rect.collidepoint(event.pos):
                     autobutton.change_tick(5)
-
-                    if pringle_count >= 10 + (10 * auto_pringle):
+                    cost = 10 * (auto_pringle + 1)
+                    if pringle_count >= cost:
                         auto_pringle += 1
-                        pringle_count -= (10 * auto_pringle) #Add math so cost goes up for every autoclicker bought
+                        pringle_count -= cost #Add variable so cost goes up for every autoclicker bought
 
             # Handle the auto pringle event triggered every 2 seconds
             if event.type == AUTO_PRINGLE_EVENT:
